@@ -1,0 +1,50 @@
+version: '3.7'
+services:
+  api:
+    platform: linux/x86_64
+    build: .
+    ports:
+      - "8080:8080"
+    tty: true
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      - MYSQL_USER=${USERNAME}
+      - MYSQL_PASSWORD=${USERPASS}
+      - MYSQL_HOST=${HOSTNAME}
+      - MYSQL_PORT=${PORTNUMBER}
+      - MYSQL_DATABASE=${DATABASENAME}
+  
+  mysql:
+    image: mysql:5.7
+    platform: linux/x86_64
+    volumes:
+      - db-store:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${ROOTPASS}
+      - MYSQL_DATABASE=${DATABASENAME}
+    command: >
+
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --innodb_file_per_table
+      --innodb_file_format=BARRACUDA
+      --innodb_large_prefix=1
+      --innodb_use_native_aio=0
+    ports:
+      - "4306:3306"
+
+  phpmyadmin:
+    platform: linux/x86_64
+    image: phpmyadmin
+    ports:
+      - 8000:80
+    environment:
+      - PMA_HOST=${PHOSTNAME}
+      - PMA_PASSWORD=${PPASS}
+      - PMA_USER=${PUSERNAME}
+      - PMA_ARBITRAY=${PARBITRAY}
+volumes:
+  db-store:

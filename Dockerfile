@@ -1,3 +1,3 @@
-FROM golang:1.2
+FROM golang:1.20
 
-RUN go get github.com/rubenv/sql-migrate/...
+RUN go install github.com/rubenv/sql-migrate/...@latest
