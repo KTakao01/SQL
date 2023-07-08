@@ -1,0 +1,3 @@
+FROM golang:1.2
+
+RUN go get github.com/rubenv/sql-migrate/...
